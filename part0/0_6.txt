@@ -1,0 +1,10 @@
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+note over browser:
+browser starts executing the event-handler for submming a form,
+push the note to lists, rerender the note list using DOM-API and send the new note to server
+end note
+server->browser: created code 201
+
+note over browser:
+In my opinion, we should send new note to server firstly. If it is succeesful, then rerenders the note list on the browser.
+end note
