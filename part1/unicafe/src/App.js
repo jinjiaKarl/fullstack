@@ -5,7 +5,18 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const all = good + neutral + bad
+  let average = 0
+  if (all !== 0) {
+    average = (good - bad) / all
+  }
 
+  let positive = 0
+  if (all !== 0) { 
+    // 小数点后保留15位
+    positive = (good / all * 100).toFixed(15)
+  }  
+  
   const handleGood = () => setGood(good+1)
   const handleNeutral = () => setNeutral(neutral+1)
   const handleBad = () => setBad(bad+1)
@@ -21,6 +32,9 @@ const App = () => {
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
+      <p>all {all}</p>
+      <p>average {average}</p>
+      <p>positive {positive} {"%"}</p>
     </div>
   )
 }
