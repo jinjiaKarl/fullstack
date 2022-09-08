@@ -17,7 +17,10 @@ const App = () => {
   
   const handleButton = () => {
     // generate ramdom integer [0, anecdotes.length)
-    const index = Math.floor(Math.random() * anecdotes.length)
+    let index = selected
+    while (index === selected) {
+      index = Math.floor(Math.random() * anecdotes.length)
+    }
     setSelected(index)
   }
   const handleVote = () => {
