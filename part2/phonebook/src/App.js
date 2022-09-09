@@ -52,15 +52,9 @@ const App = () => {
     setFilterName(event.target.value)
   }
   // NB: do I have a better way?
-  let showPersons = []
-  if (filterName.length === 0) {
-    showPersons = persons
-  } else {
-    persons.forEach(element => {
-      if (element.name.toLocaleLowerCase().includes(filterName.toLocaleLowerCase())) {
-        showPersons.push(element)
-      }
-    })
+  let showPersons = persons
+  if (filterName.length > 0) {
+    showPersons = persons.filter(person => person.name.toLowerCase().includes(filterName.toLowerCase()))
   }
  
   return (
