@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios'
- 
+// for weather api
+const apiKey = process.env.REACT_APP_API_KEY
 const App = () => {
   // 
   const [filter,setFilter] = useState('')
@@ -31,16 +32,61 @@ const App = () => {
 }
 
 const Country = ({ country }) => {
-  // Object.values返回一个给定对象自身的所有可枚举属性值的数组
+  const [show, setShow] = useState(false)
+  const hanleOnClick = () => {
+    setShow(!show)
+  }
+  const text = show ? 'hide' : 'show'
+  return (
+    <>
+      {country.name.common}
+      <button onClick={hanleOnClick}>{text}</button>
+      <br/>
+      {show && <View country={country}/>}
+    </>
+  )
+}
+
+// TODO: how to refactor this?
+const View =  ({ country }) => {
+  const [weather, setWeather] = useState({})
+  const url = "https://api.openweathermap.org/data/2.5/weather?appid=" + apiKey + "&q=" + country.capital[0]
+  useEffect(() => {
+    axios.get(url)
+      .then(response => {
+        setWeather(response.data)
+      })
+    },[])
+  if (Object.keys(weather).length === 0) {
+    return ( 
+      <>
+        <h2>{country.name.common}</h2>
+        capital {country.capital[0]} <br/>
+        <p>area {country.area}</p>
+        <h3>languages</h3>
+        <ul>
+          {Object.values(country.languages).map(language => <li key={language}>{language}</li>)}
+        </ul>
+        </>
+    )
+  }
+      console.log(country)
+      console.log(weather)
+
   return (
     <>
       <h2>{country.name.common}</h2>
-      <p>capital {country.area}</p>
-      <h3>languages:</h3>
+      <p>capital {country.capital}</p>
+      <p>area {country.area}</p>
+      <h3>languages</h3>
       <ul>
         {Object.values(country.languages).map(language => <li key={language}>{language}</li>)}
       </ul>
-      <img src={country.flags.png} alt="flag" width="100" height="100" />
+      <img src={country.flags.png} alt='flag' width='100' height='100'/>
+      <h3>weather in {country.capital}</h3>
+      <p>temperature: {} Celcius </p>
+      <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt='weather icon' width='100' height='100'/>
+      <p>wind: {weather.wind.speed} m/s</p>
     </>
   )
 }
@@ -53,16 +99,9 @@ const  Countries = ({ countries }) => {
       </>
     )
   }
-  if (countries.length === 1) {
-    return (
-      <>
-        <Country country={countries[0]} />
-      </>
-    )
-  }
   return ( 
     <>
-      {countries.map(country => <p key={country.name.common}>{country.name.common}</p>)}
+      {countries.map(country => <Country key={country.name.common} country={country}/>)}
     </>
   )
 }
