@@ -4,7 +4,6 @@ import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import personService from './services/persons'
-import { v4 as uuidv4 } from 'uuid'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -34,7 +33,13 @@ const App = () => {
       }
     })
     if (isRepeated) {
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+          personService
+          .update(persons.find(element => element.name === newName).id, {name: newName, number: newNumber})
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
+          })
+      }
     } else {
       const newPerson = {
         name: newName,
