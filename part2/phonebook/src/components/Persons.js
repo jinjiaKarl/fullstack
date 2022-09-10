@@ -1,9 +1,23 @@
-const Persons = ({showPersons}) => {
+const Persons = ({showPersons, persons, setPersons, personService}) => {
+    const handleOnClick = (element) => {
+       if (window.confirm(`Delete ${element.name}`)) {
+            personService
+            .deletePerson(element.id)
+            .then(returnedPerson => {
+                // console.log(returnedPerson) // prints {}
+                 // array.filter() return a new array
+                setPersons(persons.filter(person => person.id !== element.id))
+            })
+       }
+    }
     return (
         <>
         {showPersons.map((element => {
             return (
-                <div key={element.id}>{element.name} {element.number}</div>
+                <div key={element.id}>
+                    {element.name} {element.number}
+                    <button onClick={()=> {handleOnClick(element)}}>Delete</button>
+                </div>
             )
         }))}
         </>

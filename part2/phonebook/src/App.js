@@ -3,8 +3,8 @@ import React from 'react'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
+import personService from './services/persons'
 import { v4 as uuidv4 } from 'uuid'
-import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -13,19 +13,19 @@ const App = () => {
   const [filterName, setFilterName] = useState('')
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons')
-      .then(resp => {
-        console.log(resp)
-        setPersons(resp.data)
-      })
+    personService
+    .getAll()
+    .then(initialPersons => {
+      setPersons(initialPersons)
+    })
   }, [])
 
 
   const handleSubmit = (event) => {
+    event.preventDefault()
     if (newName.length === 0) {
       return
     }
-    event.preventDefault()
     let isRepeated = false
     persons.forEach(element => {
       if (element.name === newName) {
@@ -36,8 +36,17 @@ const App = () => {
     if (isRepeated) {
       alert(`${newName} is already added to phonebook`)
     } else {
-      // array.concat() returns a new array
-      setPersons(persons.concat({name: newName, number: newNumber, id: uuidv4()}))
+      const newPerson = {
+        name: newName,
+        number: newNumber,
+        id: persons.length + 1
+      }
+      personService
+      .create(newPerson)
+      .then(returnedPerson => {
+        // array.concat() returns a new array
+        setPersons(persons.concat(returnedPerson))
+      })
     }
     setNewName('')
     setNewNumber('')
@@ -64,7 +73,7 @@ const App = () => {
       <h3>Add a new</h3>
       <PersonForm handleSubmit={handleSubmit} newName={newName} handleInputNameChange={handleInputNameChange} newNumber={newNumber} handleInputNumberChange={handleInputNumberChange}/>
       <h2>Numbers</h2>
-      <Persons showPersons={showPersons}/>
+      <Persons showPersons={showPersons} persons={persons} setPersons={setPersons} personService={personService}/>
     </div>
   )
 }
