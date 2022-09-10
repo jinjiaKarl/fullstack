@@ -12,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
   const [message, setMessage] = useState('')
+  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
     personService
@@ -43,7 +44,7 @@ const App = () => {
           })
           setMessage(`${newName} number is changed`)
           setTimeout(() => {
-            setMessage(null)
+            setMessage('')
           }, 5000)
       }
     } else {
@@ -84,12 +85,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={message} isError={isError}/>
       <Filter filterName={filterName} handleInputFilterNameChange={handleInputFilterNameChange}/>
       <h3>Add a new</h3>
       <PersonForm handleSubmit={handleSubmit} newName={newName} handleInputNameChange={handleInputNameChange} newNumber={newNumber} handleInputNumberChange={handleInputNumberChange}/>
       <h2>Numbers</h2>
-      <Persons showPersons={showPersons} persons={persons} setPersons={setPersons} personService={personService}/>
+      <Persons showPersons={showPersons} persons={persons} setPersons={setPersons} personService={personService} setIsError={setIsError} setMessage={setMessage}/>
     </div>
   )
 }

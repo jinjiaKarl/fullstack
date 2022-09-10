@@ -1,4 +1,4 @@
-const Persons = ({showPersons, persons, setPersons, personService}) => {
+const Persons = ({showPersons, persons, setPersons, personService, setIsError, setMessage}) => {
     const handleOnClick = (element) => {
        if (window.confirm(`Delete ${element.name}`)) {
             personService
@@ -7,6 +7,12 @@ const Persons = ({showPersons, persons, setPersons, personService}) => {
                 // console.log(returnedPerson) // prints {}
                  // array.filter() return a new array
                 setPersons(persons.filter(person => person.id !== element.id))
+            }).catch(error => {
+                setIsError(true)
+                setMessage(`Information of ${element.name} has already been removed from server`)
+                setTimeout(() => {
+                    setMessage('')
+                },  5000)
             })
        }
     }
