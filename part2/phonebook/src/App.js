@@ -3,6 +3,7 @@ import React from 'react'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
+import Notification from './components/Notification'
 import personService from './services/persons'
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     personService
@@ -39,6 +41,10 @@ const App = () => {
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
           })
+          setMessage(`${newName} number is changed`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
       }
     } else {
       const newPerson = {
@@ -52,6 +58,10 @@ const App = () => {
         // array.concat() returns a new array
         setPersons(persons.concat(returnedPerson))
       })
+      setMessage(`Added ${newName}`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
     setNewName('')
     setNewNumber('')
@@ -74,6 +84,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter filterName={filterName} handleInputFilterNameChange={handleInputFilterNameChange}/>
       <h3>Add a new</h3>
       <PersonForm handleSubmit={handleSubmit} newName={newName} handleInputNameChange={handleInputNameChange} newNumber={newNumber} handleInputNumberChange={handleInputNumberChange}/>
