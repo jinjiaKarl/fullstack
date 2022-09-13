@@ -1,6 +1,10 @@
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
+const cors = require('cors')
+const dotenv = require("dotenv")
+dotenv.config()
+
 
 // parse body of requests as JSON
 app.use(express.json())
@@ -11,6 +15,8 @@ app.use(express.json())
 //     })
 //     next()
 // })
+app.use(cors())
+app.use(express.static('build'))
 
 // 如果在路由处添加了req.boy.id，但是这个中间件应该是在进入路由之前的执行的，为什么req.body.id会有值？？？
 // 因为 morgan()还有第二个参数option,{ immediate: true }，默认是false, 意味着等到有response的时候才会打印log
@@ -124,7 +130,13 @@ app.get('/info', (request, response) => {
     response.send(info)
 })
 
-const PORT = 3001
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+  
+app.use(unknownEndpoint)
+
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
