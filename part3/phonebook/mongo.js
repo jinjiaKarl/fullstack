@@ -23,7 +23,10 @@ mongoose
   .then(() => {
     // console.log('connected')
   })
-  .catch((err) => console.log(err))
+  .catch((err) => {
+    console.log(err)
+    process.exit(1)
+  })
 
 
 if (process.argv.length === 3) {
