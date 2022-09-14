@@ -93,8 +93,9 @@ app.put('/api/persons/:id', (request, response, next) => {
     const newPerson = {
         ...request.body,
     }
+    // 针对updates，不会自动运行validation https://github.com/mongoose-unique-validator/mongoose-unique-validator#find--updates
     // { new: true } means return the updated person
-    Person.findByIdAndUpdate(request.params.id, newPerson, { new: true })
+    Person.findByIdAndUpdate(request.params.id, newPerson, { new: true, runValidators: true, context: 'query' })
     .then(updatedPerson => {
         response.json(updatedPerson)
     })
@@ -125,29 +126,23 @@ app.post('/api/persons', async (request, response, next) => {
        // id: generateRandomId(),
         ...request.body
     })
-    if (!newPerson.name || !newPerson.number) {
-        return response.status(400).json({
-            error: 'content missing'
-        })
-    }
+    
     try {
-        console.log(newPerson)
         const findPerson = await Person.find({name: newPerson.name})
-        console.log(findPerson)
         if (findPerson.length > 0) {
             return response.status(400).json({
                 error: 'name must be unique'
             }) 
         }
     } catch(error) {
-       next(err)
+       next(error)
     }
 
     try {
         const savedPerson = await newPerson.save()
         response.json(savedPerson)
     } catch(error) {
-        next(err)
+        next(error)
     }
 })
 
@@ -175,7 +170,9 @@ const errorHandler = (error, request, response, next) => {
     // https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1
     if (error.name === 'CastError') {
       return response.status(400).send({ error: 'malformatted id' })
-    } 
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message })
+    }
   
     next(error)
   }

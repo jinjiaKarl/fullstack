@@ -16,12 +16,14 @@ const Notification = ({ message, isError }) => {
                 {message}
             </div>
         )
-    } 
-
-    const successStyle = {
-        color: 'green',
-        ...errorStyle
     }
+    // 注意赋值的时候，先解构对象，再覆盖属性
+    const successStyle = {
+        ...errorStyle,
+        color: 'green'
+    }
+    console.log(message," ", successStyle)
+
     return (
         <div className="success" style={successStyle}>
         {message}

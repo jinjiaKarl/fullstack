@@ -11,10 +11,28 @@ mongoose.connect(url)
   .catch((error) => {
     console.log('error connecting to MongoDB:', error.message)
 })
-
+// https://mongoosejs.com/docs/validation.html
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String
+   // name: String,
+    name: {
+      type: String,
+      minlength: 3,
+      required: true,
+    },
+    number: {
+      type: String,
+      minlength: 8,
+      required: true,
+      validate: {
+        validator: function(v) {
+          return /\d{2,3}-\d+/.test(v);
+        },
+        message: props => {
+          console.log(props)
+          return `${props.value} is not a valid phone number!`
+        }
+      }
+    }
 })
   
 // the toJSON method of each object is called automatically by the JSON.stringify method.

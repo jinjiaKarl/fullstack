@@ -60,10 +60,20 @@ const App = () => {
         // array.concat() returns a new array
         setPersons(persons.concat(returnedPerson))
       })
-      setMessage(`Added ${newName}`)
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+      .then(() => {
+        setMessage(`Added ${newName}`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      })
+      .catch(error => {
+        setIsError(true)
+        setMessage(error.response.data.error)
+        setTimeout(() => {
+          setMessage('')
+          setIsError(false)
+        }, 5000)
+      })
     }
     setNewName('')
     setNewNumber('')

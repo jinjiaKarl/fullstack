@@ -12,6 +12,7 @@ const Persons = ({showPersons, persons, setPersons, personService, setIsError, s
                 setMessage(`Information of ${element.name} has already been removed from server`)
                 setTimeout(() => {
                     setMessage('')
+                    setIsError(false)
                 },  5000)
             })
        }
