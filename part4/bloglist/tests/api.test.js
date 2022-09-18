@@ -65,6 +65,29 @@ describe('post', () => {
 	})
 })
 
+describe('delete', () => {
+	test('delete success', async () => {
+		const blogsInDb = await helper.blogsInDb()
+		const blogToDelete = blogsInDb[0]
+		await api.delete(`/api/blogs/${blogToDelete.id}`)
+		const blogsAfterDelete = await helper.blogsInDb()
+		expect(blogsAfterDelete).toHaveLength(blogsInDb.length - 1) 
+	})
+})
+
+describe('put', () => {
+	test('update success', async () => {
+		const blogsInDb = await helper.blogsInDb()
+		const blogToUpdate = blogsInDb[0]
+		const newBlog = {
+			...blogToUpdate,
+			likes: 10
+		}
+		const resp = await api.put(`/api/blogs/${blogToUpdate.id}`).send(newBlog)
+		expect(resp.body.likes).toBe(10)
+	})
+})
+
 
 // 关闭连接
 afterAll(() => {
