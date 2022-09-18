@@ -2,7 +2,7 @@ POST http://localhost:3001/api/blogs
 # spcify http header
 Content-Type: application/json 
 
-{"title":"test","author":"bob","url":"http://www.google.com","likes":1}
+{"title":"test","author":"bob","url":"http://www.google.com"}
 
 ###
 GET http://localhost:3001/api/blogs
