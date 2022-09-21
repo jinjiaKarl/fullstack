@@ -1,0 +1,37 @@
+POST http://localhost:3001/api/users
+# spcify http header
+Content-Type: application/json 
+
+{"username":"test","name":"jinjia","password":"123456"}
+
+
+###
+GET http://localhost:3001/api/users
+
+
+###
+GET http://localhost:3001/api/blogs
+
+###
+POST http://localhost:3001/api/login
+Content-Type: application/json 
+
+{"username":"test","password":"123456"}
+
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYzMmFmNDIzZjEzMmZiZGVmNTJhMGQyZCIsImlhdCI6MTY2Mzc2NjIxN30.zZ3nU9cTP4pcwEg5o54529_TrvmfiXuPbOFbya1Vzyw
+
+{
+    "title": "test",
+    "author": "test",
+    "url": "test",
+    "likes": 1
+}
+
+
+###
+DELETE http://localhost:3001/api/blogs/632af8637e8b7c770ad9789b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYzMmFmNDIzZjEzMmZiZGVmNTJhMGQyZCIsImlhdCI6MTY2Mzc2MDg2MywiZXhwIjoxNjYzNzY0NDYzfQ.PEbQC3DV1eGC2vSQu35GWvICMiJMf4J2fZ29uY2-4dg
