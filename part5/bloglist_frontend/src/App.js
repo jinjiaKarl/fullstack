@@ -12,6 +12,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [update, setUpdate] = useState(null)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -24,7 +25,7 @@ const App = () => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
-  }, [])
+  }, [update])
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
     if (loggedUserJSON) {
@@ -79,8 +80,8 @@ const App = () => {
     }catch(error) {
       alert(error)
     }
-   
   }
+  
 
   if (user === null) {
     return (
@@ -100,8 +101,10 @@ const App = () => {
       <Togglable buttonLabel='new note' ref={blogFormRef}>
         <BlogForm addBlog={addBlog} setAuthor={setAuthor} setTitle={setTitle} setUrl={setUrl} />
       </Togglable>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} user={user} />
+      {blogs
+        .sort((a, b) => b.likes - a.likes)
+        .map(blog =>
+        <Blog key={blog.id} blog={blog} user={user} setUpdate={setUpdate}/>
       )}
     </div>
   )
