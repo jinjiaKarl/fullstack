@@ -1,6 +1,9 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
-const Blog = ({blog, user, setUpdate}) => {
+import PropTypes from 'prop-types'
+
+
+const Blog = ({ blog, user, setUpdate }) => {
   const [visible, setVisible] = useState(false)
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
@@ -20,7 +23,7 @@ const Blog = ({blog, user, setUpdate}) => {
   }
   const handleRemove = async () => {
     if (!window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-        return
+      return
     }
     await blogService.deleteBlog(blog.id)
     setUpdate(Math.floor(Math.random() * 100))
@@ -46,8 +49,14 @@ const Blog = ({blog, user, setUpdate}) => {
         <button onClick={handleRemove}>remove</button>
 
       </div>
-    </div>  
+    </div>
   )
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  setUpdate: PropTypes.func.isRequired
 }
 
 export default Blog

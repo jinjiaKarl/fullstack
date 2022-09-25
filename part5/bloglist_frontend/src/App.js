@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef} from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -24,7 +24,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [update])
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBloglistUser')
@@ -49,7 +49,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (error) {
-      setNotification({message: 'wrong username or password', type: 'alert'})
+      setNotification({ message: 'wrong username or password', type: 'alert' })
       setTimeout(() => {
         setNotification(null)
       }, 5000)
@@ -72,7 +72,7 @@ const App = () => {
       setAuthor('')
       setTitle('')
       setUrl('')
-      setNotification({message: `a new blog ${title} by ${author} added`})
+      setNotification({ message: `a new blog ${title} by ${author} added` })
       setTimeout(() => {
         setNotification(null)
       }, 5000)
@@ -81,7 +81,7 @@ const App = () => {
       alert(error)
     }
   }
-  
+
 
   if (user === null) {
     return (
@@ -104,8 +104,8 @@ const App = () => {
       {blogs
         .sort((a, b) => b.likes - a.likes)
         .map(blog =>
-        <Blog key={blog.id} blog={blog} user={user} setUpdate={setUpdate}/>
-      )}
+          <Blog key={blog.id} blog={blog} user={user} setUpdate={setUpdate}/>
+        )}
     </div>
   )
 }

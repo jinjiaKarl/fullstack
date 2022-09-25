@@ -1,7 +1,9 @@
-const BlogForm = ({addBlog, setAuthor, setTitle, setUrl} ) => {
-    return (
-        <>
-       <form onSubmit={addBlog}>
+import PropTypes from 'prop-types'
+
+const BlogForm = ({ addBlog, setAuthor, setTitle, setUrl } ) => {
+  return (
+    <>
+      <form onSubmit={addBlog}>
         <div>
           title: <input type="text" name="Title" onChange={({ target }) => setTitle(target.value)}/>
         </div>
@@ -13,8 +15,16 @@ const BlogForm = ({addBlog, setAuthor, setTitle, setUrl} ) => {
         </div>
         <button type="submit">create</button>
       </form>
-        </>
-    )
+    </>
+  )
+}
+
+
+BlogForm.propTypes = {
+  addBlog: PropTypes.func.isRequired,
+  setAuthor: PropTypes.func.isRequired,
+  setTitle: PropTypes.func.isRequired,
+  setUrl: PropTypes.func.isRequired
 }
 
 export default BlogForm
