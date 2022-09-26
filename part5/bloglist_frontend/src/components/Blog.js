@@ -38,16 +38,15 @@ const Blog = ({ blog, user, setUpdate }) => {
   }
   return (
     <div style={blogStyle}>
-      <div style={hideWhenVisible}>
+      <div style={hideWhenVisible} className='blogDiv'>
         {blog.title} {blog.author} <button onClick={toggleVisibility}>view</button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className='blogFullDiv'>
         {blog.title} {blog.author}  <button onClick={toggleVisibility}>hide</button>
         <div>{blog.url}</div>
         <div>{blog.likes} likes <button onClick={hanldLikes}>like</button></div>
         <div>{user.username}</div>
         <button onClick={handleRemove}>remove</button>
-
       </div>
     </div>
   )
