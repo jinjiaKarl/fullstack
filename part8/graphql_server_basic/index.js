@@ -1,4 +1,4 @@
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer, gql, UserInputError } = require('apollo-server')
 const { v1: uuid } = require('uuid')
 
 let authors = [
@@ -174,7 +174,6 @@ const resolvers = {
     },
     editAuthor: (root, args) => {
       const author = authors.find( author => author.name === args.name)
-      // 修改 
       if (!author) {
         return null
       }
@@ -182,7 +181,7 @@ const resolvers = {
         return null
       }
       const updateAuthor = { ...author, born: args.setBornTo }
-      authors = authors.map(book => book.author === author.name ? updatedPerson : book)
+      authors = authors.map(au => au.name === author.name ? updateAuthor : au)
       let bookCount = books.filter( book => book.author === author.name).length
       return { ...updateAuthor, bookCount }
     }
@@ -194,6 +193,6 @@ const server = new ApolloServer({
   resolvers,
 })
 
-server.listen().then(({ url }) => {
+server.listen({port: 4000}).then(({ url }) => {
   console.log(`Server ready at ${url}`)
 })
