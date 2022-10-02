@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import { SET_BIRTHDAY,ALL_AUTHORS } from '../queries'
+import Select from 'react-select'
 
 const BornYearForm = ({ notify, authors}) => {
-    const [name, setName] = useState('')
+    const [nameOption, setNameOption] = useState(null)
     const [born, setBorn] = useState('')
 
     const [setBirthday, result] = useMutation(SET_BIRTHDAY, {
@@ -18,22 +19,30 @@ const BornYearForm = ({ notify, authors}) => {
             notify('author not found')
           }
     }, [result.data]) // eslint-disable-line
-    
+
     const handleSubmit = (event) => {
         event.preventDefault()
         console.log('update author born year...')
+        const name = nameOption.value
         setBirthday({ variables: { name, setBornTo: Number(born) } })
 
-        setName('')
+        setNameOption(null)
         setBorn('')
     }
+
+    const options = []
+    authors.forEach(author => {
+        options.push({ value: author.name, label: author.name })
+    })
     return (
         <div>
             <h2>Set birthyear</h2>
             <form onSubmit={handleSubmit}>
-                <div>
-                    name <input value={name} onChange={({ target }) => setName(target.value)}/>
-                </div>
+                <Select 
+                    value={nameOption}
+                    onChange={setNameOption}
+                    options={options}
+                />
                 <div>
                     born <input value={born} onChange={({ target }) => setBorn(target.value)}/>
                 </div>
