@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const CREATE_BOOK = gql`
-  mutation createBook($title: String!, $author: String!, $published: Int!, $genres: [String!]!) {
+  mutation createBook($title: String!, $author: AuthorInput!, $published: Int!, $genres: [String!]!) {
     addBook(
       title: $title,
       author: $author,
@@ -9,7 +9,9 @@ export const CREATE_BOOK = gql`
       genres: $genres
       ) {
         title
-        author
+        author {
+          name
+        }
         published
         genres
         }
@@ -28,12 +30,16 @@ export const SET_BIRTHDAY = gql`
 `
 
 // 带有变量的query要有名称
+// 注意返回值里有结构体时，要用花括号括起来写对应的字段名
 export const ALL_BOOKS = gql`
 query filterBooks($genre: String, $author: String) {
   allBooks(genre: $genre, author: $author) {
     title
-    author
+    author {
+      name
+    }
     published
+    genres
   }
 }`
 
@@ -46,4 +52,20 @@ query {
   }
 }`
 
+export const LOGIN = gql`
+mutation login($username: String!, $password: String!) {
+  login(
+    username: $username,
+    password: $password
+  ) {
+    value
+  }
+}`
 
+export const ME = gql`
+query {
+  me {
+    username
+    favoriteGenre
+  }
+}`

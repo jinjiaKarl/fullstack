@@ -14,10 +14,10 @@ const NewBook = (props) => {
   const [createBook] = useMutation(CREATE_BOOK, {
     refetchQueries: [ {query: ALL_BOOKS}, {query: ALL_AUTHORS}],
     onError: (error) => {
+      console.log(error)
       props.notify(error.graphQLErrors[0].message)
     }
   })
-
 
   if (!props.show) {
     return null
@@ -25,8 +25,8 @@ const NewBook = (props) => {
 
   const submit = async (event) => {
     event.preventDefault()
-
-    createBook({ variables: { title, author, published: Number(published), genres } })
+    
+    createBook({ variables: { title, author: {name: author}, published: Number(published), genres } })
     console.log('add book...')
 
     setTitle('')
