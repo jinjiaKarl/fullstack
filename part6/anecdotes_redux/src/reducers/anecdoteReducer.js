@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit'
+
 const anecdotesAtStart = [
     'If it hurts, do it more often',
     'Adding manpower to a late software project makes it later!',
@@ -6,53 +8,38 @@ const anecdotesAtStart = [
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
   ]
+
+const getId = () => (100000 * Math.random()).toFixed(0)
   
-  const getId = () => (100000 * Math.random()).toFixed(0)
-  
-  const asObject = (anecdote) => {
+const asObject = (anecdote) => {
     return {
       content: anecdote,
       id: getId(),
       votes: 0
     }
-  }
-  
-  const initialState = anecdotesAtStart.map(asObject)
-  
-  const reducer = (state = initialState, action) => {
-    console.log('state now: ', state)
-    console.log('action', action)
-    switch (action.type) {
-      case 'VOTE':
-        const anecdote = state.find(anecdote => anecdote.id === action.data.id)
+}
+const anecdoteSlice = createSlice({
+    name: 'anecdotes',
+    initialState: anecdotesAtStart.map(asObject),
+    reducers: {
+      voteAction: (state, action) => {
+        // action.type: 'anecdotes/voteAction'
+        // dispatch(voteAction(111))
+        // dispatch({ type: 'anecdoteSlice/voteAction', payload: 1111 })
+        const id = action.payload
+        const anecdote = state.find(anecdote => anecdote.id === id)
         const changedAnecdote = {
           ...anecdote,
           votes: anecdote.votes + 1
         }
-        return state.map(anecdote => anecdote.id === action.data.id ? changedAnecdote : anecdote)
-      case 'NEW_ANECDOTE':
-        return [...state, action.data]
-      default:
-        return state
+        // 返回的就是最新的state
+        return state.map(anecdote => anecdote.id === id ? changedAnecdote : anecdote)
+      },
+      createAction: (state, action) => {
+        return [...state,{ content: action.payload, id: getId(), votes: 0 }]
+      },
     }
-  }
-
-export const voteAction = (id) => {
-  return {
-    type: 'VOTE',
-    data: { id }
-  }
-}
-
-export const createAction = (content) => {
-  return {
-    type: 'NEW_ANECDOTE',
-    data: {
-      content,
-      votes: 0,
-      id: getId()
-    }
-  }
-}
+})
   
-  export default reducer
+export const { voteAction, createAction } = anecdoteSlice.actions
+export default anecdoteSlice.reducer

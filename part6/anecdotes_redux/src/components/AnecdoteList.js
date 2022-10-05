@@ -1,25 +1,37 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { voteAction } from '../reducers/anecdoteReducer'
+import { setMessageAction } from '../reducers/messageReducer'
 
 
 const AnecdoteList = (props) => {
-    const anecdotes = useSelector(state => state)
+    const anecdotes = useSelector(state => {
+        if (state.filters === 'ALL') {
+            return state.anecdotes
+        }
+        return state.anecdotes.filter(a => a.content.toLowerCase().includes(state.filters.toLowerCase()))
+    })
+    // 因为sort()是原地排序，所以需要先复制一份
+    const copyAnecdotes = [...anecdotes]
+    console.log(anecdotes)
     const dispatch = useDispatch()
-    const vote = (id) => {
-        dispatch(voteAction(id))
-      }
+    const handleClick = (anecdote) => {
+        dispatch(voteAction(anecdote.id))
+        dispatch(setMessageAction(`you voted '${anecdote.content}'`))
+        setTimeout(() => {
+            dispatch(setMessageAction(''))
+        }, 5000)
+    }
 
     return (
         <div>
-            <h2>Anecdotes</h2>
-            {anecdotes.sort((b1, b2) => b2.votes - b1.votes).map(anecdote =>
+            {copyAnecdotes.sort((b1, b2) => { return b2.votes - b1.votes}).map(anecdote =>
             <div key={anecdote.id}>
             <div>
                 {anecdote.content}
             </div>
             <div>
                 has {anecdote.votes}
-                <button onClick={() => vote(anecdote.id)}>vote</button>
+                <button onClick={() =>  handleClick(anecdote) }>vote</button>
             </div>
             </div>
       )}
