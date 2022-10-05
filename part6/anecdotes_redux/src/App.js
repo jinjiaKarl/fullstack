@@ -4,18 +4,13 @@ import Notification  from "./components/Notification"
 import Filter  from "./components/Filter"
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import anecdoteService from './services/anecdotes'
-import {initAnecdotes} from './reducers/anecdoteReducer'
+import {initializeAnecdotes} from './reducers/anecdoteReducer'
 
 const App = () => {
 
   const dispatch = useDispatch()
   useEffect( () => {
-    async function init() {
-      const anecdotes = await anecdoteService.getAll()
-      dispatch(initAnecdotes(anecdotes))
-    }
-    init()
+    dispatch(initializeAnecdotes())
   }, []) // eslint-disable-line react-hooks/exhaustive-deps  
   
   return (

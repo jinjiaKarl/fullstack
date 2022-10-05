@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { voteAction } from '../reducers/anecdoteReducer'
-import { setMessageAction } from '../reducers/messageReducer'
+import { voteOne } from '../reducers/anecdoteReducer'
+import { setMessage } from '../reducers/messageReducer'
 
 
 const AnecdoteList = (props) => {
@@ -12,14 +12,10 @@ const AnecdoteList = (props) => {
     })
     // 因为sort()是原地排序，所以需要先复制一份
     const copyAnecdotes = [...anecdotes]
-    console.log(anecdotes)
     const dispatch = useDispatch()
     const handleClick = (anecdote) => {
-        dispatch(voteAction(anecdote.id))
-        dispatch(setMessageAction(`you voted '${anecdote.content}'`))
-        setTimeout(() => {
-            dispatch(setMessageAction(''))
-        }, 5000)
+        dispatch(voteOne(anecdote.id))
+        dispatch(setMessage(`you voted '${anecdote.content}'`, 5))
     }
 
     return (

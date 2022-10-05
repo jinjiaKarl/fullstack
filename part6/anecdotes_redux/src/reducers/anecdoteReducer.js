@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import anecdoteService from '../services/anecdotes'
 
 
 const anecdoteSlice = createSlice({
@@ -28,4 +29,27 @@ const anecdoteSlice = createSlice({
 })
   
 export const { voteAction, createAction,initAnecdotes } = anecdoteSlice.actions
+
+// npm install redux-thunk
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch(initAnecdotes(anecdotes))
+  }
+}
+// The principle here is the same: first, an asynchronous operation is executed, 
+// after which the action changing the state of the store is dispatched. 
+export const createOne = (content) => {
+  return async dispatch => {
+    const res = await anecdoteService.createNew(content)
+    dispatch(createAction(res))
+  }
+}
+
+export const voteOne = (id) => {
+  return async dispatch => {
+    const res = await anecdoteService.voteOne(id)
+    dispatch(voteAction(res.id))
+  }
+}
 export default anecdoteSlice.reducer
