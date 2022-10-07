@@ -1,15 +1,17 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { deleteBlogById, updateBlogById } from '../reducers/blogReducer'
+import { initializeBlogs } from '../reducers/blogReducer'
 
-const Blog = ({ blog, user, setUpdate }) => {
+const Blog = ({ blog, user }) => {
   const [visible, setVisible] = useState(false)
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
   const toggleVisibility = () => {
     setVisible(!visible)
   }
-
+  const dispatch = useDispatch()
   const hanldLikes = async () => {
     const newBlog = {
       title: blog.title,
@@ -17,15 +19,17 @@ const Blog = ({ blog, user, setUpdate }) => {
       url: blog.url,
       likes: blog.likes + 1
     }
-    await blogService.update(blog.id, newBlog)
-    setUpdate(Math.floor(Math.random() * 100))
+    dispatch(updateBlogById(blog.id, newBlog))
+    // 更新blog后，重新获取blog列表
+    dispatch(initializeBlogs())
   }
   const handleRemove = async () => {
     if (!window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       return
     }
-    await blogService.deleteBlog(blog.id)
-    setUpdate(Math.floor(Math.random() * 100))
+    dispatch(deleteBlogById(blog.id))
+    // 更新blog后，重新获取blog列表
+    dispatch(initializeBlogs())
     toggleVisibility()
   }
   const blogStyle = {
@@ -58,7 +62,6 @@ const Blog = ({ blog, user, setUpdate }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  setUpdate: PropTypes.func.isRequired
 }
 
 export default Blog
