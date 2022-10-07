@@ -11,7 +11,7 @@ import { setAuth } from './reducers/authReducer'
 import UserList from './components/UserList'
 import {
   Routes, Route,
-  useMatch
+  useMatch, Link
 } from 'react-router-dom'
 import User from './components/User'
 import { getUsers } from './reducers/userReducer'
@@ -40,6 +40,12 @@ const App = () => {
   if (users) {
     selectedUser = match ? users.find(user => user.id === match.params.id) : null
   }
+  const blogs = useSelector(state => state.blogs)
+  const matchBlog = useMatch('/blogs/:id')
+  let selectedBlog = null
+  if (blogs) {
+    selectedBlog = matchBlog ? blogs.find(blog => blog.id === matchBlog.params.id) : null
+  }
 
   return (
     <div>
@@ -55,6 +61,11 @@ const App = () => {
           <Notification  />
           <LoginForm />
         </div>) }/>
+        <Route path='/blogs/:id' element={user ? <Blog blog={selectedBlog} user={user}/> : (<div>
+          <h2>log in to application</h2>
+          <Notification  />
+          <LoginForm />
+        </div>)} />
         <Route path='/' element= { user ?  <Home /> : (<div>
           <h2>log in to application</h2>
           <Notification  />
@@ -65,6 +76,7 @@ const App = () => {
     </div>
   )
 }
+
 const Header = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.auth)
@@ -75,21 +87,20 @@ const Header = () => {
   }
   return (
     <div>
-      <h2>blogs</h2><Notification /><p>
-        <Menu />
-        {user.username} logged in{' '}
-        <button onClick={handleLogout}>log out</button>
-      </p>
+      <h2>blogs</h2><Notification />
+      <Menu />
+      {user.username} logged in{' '}
+      <button onClick={handleLogout}>log out</button>
     </div>
   )
 }
+
+
 
 const Home = () => {
   const blogs = useSelector(state => state.blogs)
   const copyBlogs = [...blogs]
   const dispatch = useDispatch()
-  const user = useSelector(state => state.auth)
-
   const blogFormRef = useRef()
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -129,11 +140,21 @@ const Home = () => {
       {
         copyBlogs
           .sort((a, b) => b.likes - a.likes)
-          .map((blog) => (
-            <Blog key={blog.id} blog={blog} user={user} />))
+          .map((blog) => (<BlogLink key={blog.id} blog={blog} />))
       }
     </div>
   )
 }
+
+
+const BlogLink = ( { blog }) => {
+  return (
+    <div>
+      <Link to={`/blogs/${blog.id}`} key={blog.id}> {blog.title} - {blog.author}</Link>
+    </div>
+
+  )
+}
+
 
 export default App
