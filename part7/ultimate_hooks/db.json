@@ -1,0 +1,38 @@
+{
+  "notes": [
+    {
+      "content": "If it hurts, do it more often",
+      "id": "0"
+    },
+    {
+      "content": "custom-hooks are awesome",
+      "id": "1"
+    },
+    {
+      "content": "ssss",
+      "id": "0xAX-yQ"
+    }
+  ],
+  "persons": [
+    {
+      "name": "Alice",
+      "number": "123",
+      "id": "0"
+    },
+    {
+      "name": "Bob",
+      "number": "123",
+      "id": "1"
+    },
+    {
+      "name": "Tom",
+      "number": "123",
+      "id": "XGsNXed"
+    },
+    {
+      "name": "Alice2",
+      "number": "123",
+      "id": "UEfrEif"
+    }
+  ]
+}
