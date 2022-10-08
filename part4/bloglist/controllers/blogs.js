@@ -58,4 +58,25 @@ blogsRouter.put('/:id', middleware.userExtractor, async (request, response) => {
 	response.json(res)
 })
 
+blogsRouter.post('/:id/comments', middleware.userExtractor, async (request, response) => {
+	const user = request.user
+	const blog = await Blog.findById(request.params.id)
+	if (blog.user.toString() !== user.id.toString()) {
+		return response.status(401).json({
+			error: 'only the creator can update the blog'
+		})
+	}
+	const comments = blog.comments.concat(request.body.comment)
+	const newBlog = {
+		title: blog.title,
+		author: blog.author,
+		url: blog.url,
+		likes: blog.likes,
+		comments: comments
+	}
+	const res = await Blog.findByIdAndUpdate(request.params.id, newBlog, { new: true})
+	response.json(res)
+})
+
+
 module.exports =  blogsRouter

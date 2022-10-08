@@ -87,10 +87,8 @@ const Header = () => {
   }
   return (
     <div>
-      <h2>blogs</h2><Notification />
-      <Menu />
-      {user.username} logged in{' '}
-      <button onClick={handleLogout}>log out</button>
+      <Menu /> {user.username} logged in  <button onClick={handleLogout}>log out</button>
+      <h2>blog app</h2><Notification />
     </div>
   )
 }

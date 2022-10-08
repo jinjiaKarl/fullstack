@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { deleteBlogById, updateBlogById } from '../reducers/blogReducer'
-import { initializeBlogs } from '../reducers/blogReducer'
+import { initializeBlogs, addComment } from '../reducers/blogReducer'
 
 const Blog = ({ blog, user }) => {
   const dispatch = useDispatch()
@@ -23,6 +23,12 @@ const Blog = ({ blog, user }) => {
     // 更新blog后，重新获取blog列表
     dispatch(initializeBlogs())
   }
+  const handleAddComment = async (event) => {
+    event.preventDefault()
+    const comment = event.target.comment.value
+    event.target.comment.value = ''
+    dispatch(addComment(blog.id, comment))
+  }
 
   return (
     <div >
@@ -34,6 +40,16 @@ const Blog = ({ blog, user }) => {
         </div>
         <div>added by {user.username}</div>
         <button onClick={handleRemove}>remove</button>
+        <h3>comments</h3>
+        <form onSubmit={handleAddComment}>
+          <div>
+            <input name="comment" type="text"/>
+            <button type="submit">add comment</button>
+          </div>
+        </form>
+        <ul>
+          {blog.comments.map((comment, index) => <li key={index}>{comment}</li>)}
+        </ul>
       </div>
     </div>
   )

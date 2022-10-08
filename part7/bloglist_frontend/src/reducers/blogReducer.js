@@ -52,4 +52,11 @@ export const updateBlogById = (id, blog) => {
   }
 }
 
+export const addComment = (id, comment) => {
+  return async dispatch => {
+    const updatedBlog = await blogService.addComment(id, comment)
+    dispatch(updateBlog(updatedBlog))
+  }
+}
+
 export default blogSlice.reducer

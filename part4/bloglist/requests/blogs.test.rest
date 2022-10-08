@@ -8,3 +8,9 @@ Content-Type: application/json
 GET http://localhost:3001/api/blogs
 
 
+###
+POST http://localhost:3001/api/blogs/632afa0fb9623d2f9b9806c6/comments
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjYzMmFmNDIzZjEzMmZiZGVmNTJhMGQyZCIsImlhdCI6MTY2NTIxNzIwMX0.Lf4WEcLwLRNrbpMeDD-gN6i1MKLma5augNkCSRCHTt0
+Content-Type: application/json
+
+{"comment":"test comment1"}

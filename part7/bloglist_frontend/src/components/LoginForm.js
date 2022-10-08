@@ -3,6 +3,8 @@ import  { login } from '../reducers/authReducer'
 import {
   useNavigate
 } from 'react-router-dom'
+import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 
 const LoginForm = () => {
   const dispatch = useDispatch()
@@ -25,22 +27,14 @@ const LoginForm = () => {
     <>
       <form onSubmit={handleLogin}>
         <div>
-          username{' '}
-          <input
-            type="text"
-            name="username"
-          />
+          <TextField  label="username" id="username" />
         </div>
         <div>
-          password{' '}
-          <input
-            type="password"
-            name="password"
-          />
+          <TextField label="password" id="password" type='password'  />
         </div>
-        <button type="submit" className="loginSubmitButton">
-          login
-        </button>
+        <Button variant="contained" color="primary" type="submit">
+            login
+        </Button>
       </form>
     </>
   )
