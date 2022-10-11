@@ -1,9 +1,9 @@
 type InputBmi = {
     heightCm: number,
     weightKg: number
-}
+};
 
-const parseArgumentsForBmi = (args: Array<string>): InputBmi => {
+export const parseArgumentsForBmi = (args: Array<string>): InputBmi => {
     if (args.length < 4) throw new Error('Not enough arguments');
     if (args.length > 4) throw new Error('Too many arguments');
 
@@ -13,10 +13,10 @@ const parseArgumentsForBmi = (args: Array<string>): InputBmi => {
     return {
         heightCm,
         weightKg
-    }
-}
+    };
+};
 
-const calculateBmi = (heightCm: number, weightKg: number): string => {
+export const calculateBmi = (heightCm: number, weightKg: number): string => {
     const bmi =  weightKg / Math.pow(heightCm / 100, 2);
     if (bmi < 15) {
         return 'Very severely underweight';
@@ -35,15 +35,15 @@ const calculateBmi = (heightCm: number, weightKg: number): string => {
       } else {
         return 'Obese Class III (Very severely obese)	';
       }
-}
+};
 
-try {
-    const { heightCm, weightKg } = parseArgumentsForBmi(process.argv);
-    console.log(calculateBmi(heightCm, weightKg));
-} catch (error: unknown) {
-    let errorMessage = 'Something bad happened.';
-    if (error instanceof Error) {
-        errorMessage += ' Error: ' + error.message;
-    }
-    console.log(errorMessage);
-}
+// try {
+//     const { heightCm, weightKg } = parseArgumentsForBmi(process.argv);
+//     console.log(calculateBmi(heightCm, weightKg));
+// } catch (error: unknown) {
+//     let errorMessage = 'Something bad happened.';
+//     if (error instanceof Error) {
+//         errorMessage += ' Error: ' + error.message;
+//     }
+//     console.log(errorMessage);
+// }
