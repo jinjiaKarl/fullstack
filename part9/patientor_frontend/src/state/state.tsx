@@ -3,6 +3,8 @@ import { Patient } from "../types";
 
 import { Action } from "./reducer";
 
+// useContext, useReducer的使用？？
+
 export type State = {
   patients: { [id: string]: Patient };
 };
@@ -25,7 +27,9 @@ export const StateProvider = ({
   reducer,
   children
 }: StateProviderProps) => {
+  // 创建一个 state 和 dispatch 的组合
   const [state, dispatch] = useReducer(reducer, initialState);
+  // The provider makes the state and the dispatch functions available in all of the components.
   return (
     <StateContext.Provider value={[state, dispatch]}>
       {children}

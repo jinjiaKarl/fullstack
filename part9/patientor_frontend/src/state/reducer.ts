@@ -14,6 +14,7 @@ export type Action =
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "SET_PATIENT_LIST":
+      // 为什么要...state?
       return {
         ...state,
         patients: {
@@ -35,4 +36,12 @@ export const reducer = (state: State, action: Action): State => {
     default:
       return state;
   }
+};
+
+// 封装ActionCreator
+export const setPatienList = (patientList: Patient[]): Action =>  {
+  return {
+    type: "SET_PATIENT_LIST",
+    payload: patientList
+  };
 };

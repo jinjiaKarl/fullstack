@@ -1,4 +1,4 @@
-import { NewPatient, Gender} from './types';
+import { NewPatient, Gender, Entry} from './types';
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 // type guard + type predicate
@@ -50,15 +50,25 @@ const parseGender = (gender: unknown): Gender => {
     }
     return gender;
 };
-type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown };
+
+const parseEntries = (entries: unknown): Entry[] => {
+    if (!entries || !Array.isArray(entries)) {
+        throw new Error('Incorrect or missing entries');
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return entries;
+};
+
+type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown, entries: unknown };
 // parse data from outside sources
-const toNewPatientEntry = ({name, dateOfBirth, ssn, gender, occupation}: Fields): NewPatient => {
+const toNewPatientEntry = ({name, dateOfBirth, ssn, gender, occupation, entries}: Fields): NewPatient => {
     const newEntry: NewPatient = {
         name: parseName(name),
         dateOfBirth: parseDate(dateOfBirth),
         ssn: parseSsn(ssn),
         gender: parseGender(gender),
         occupation: parseOccupation(occupation),
+        entries: parseEntries(entries)
     };
     return newEntry;
 };

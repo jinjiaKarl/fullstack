@@ -12,7 +12,8 @@ const getAllNonSensitive = (): Array<NonSensitivePatient> => {
             name: p.name,
             dateOfBirth: p.dateOfBirth,
             gender:p.gender,
-            occupation: p.occupation
+            occupation: p.occupation,
+            entries: p.entries
         };
     });
     return patients;
@@ -29,10 +30,12 @@ const findById = (id: string): NonSensitivePatient | undefined => {
             name: p.name,
             dateOfBirth: p.dateOfBirth,
             gender:p.gender,
-            occupation: p.occupation
+            occupation: p.occupation,
+            entries: p.entries
         };
     });
     const entry = patients.find(p => p.id === id);
+    console.log(entry);
     return entry;
 };
 
@@ -49,7 +52,8 @@ const addPatient = (entry: NewPatient): NonSensitivePatient => {
         name: newPatient.name,
         dateOfBirth: newPatient.dateOfBirth,
         gender:newPatient.gender,
-        occupation: newPatient.occupation
+        occupation: newPatient.occupation,
+        entries: newPatient.entries
     };
 };
 
