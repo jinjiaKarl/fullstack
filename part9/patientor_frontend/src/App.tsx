@@ -39,7 +39,7 @@ const App = () => {
           <Button component={Link} to="/" variant="contained" color="primary">
             Home
           </Button>
-          <Divider hidden />
+          <Divider hidden />  
           <Routes>
             <Route path="/" element={<PatientListPage />} />
             <Route path="/patients/:id" element={ <PatientPage />} />

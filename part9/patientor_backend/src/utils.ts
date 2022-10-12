@@ -1,5 +1,7 @@
-import { NewPatient, Gender, Entry} from './types';
+import { NewPatient, Gender, Entry,HealthCheckEntry, Diagnose, HealthCheckRating, OccupationalHealthcareEntry,HospitalEntry} from './types';
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+// 判断类型
 
 // type guard + type predicate
 const isString = (text: unknown): text is string => {
@@ -72,5 +74,86 @@ const toNewPatientEntry = ({name, dateOfBirth, ssn, gender, occupation, entries}
     };
     return newEntry;
 };
+
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isCheckRating = (str: any): str is HealthCheckRating => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  return Object.values(HealthCheckRating).includes(str);
+};
+
+const parseCheckRating = (checkRating: unknown): HealthCheckRating => {
+  if (checkRating === undefined || !isCheckRating(checkRating)) {
+      throw new Error('Incorrect or missing CheckRating: ' + checkRating);
+  }
+  return checkRating;
+};
+
+
+type FieldsHealthCheckEntry = { id: string,  description: unknown, date: unknown, specialist: unknown, diagnosisCodes: unknown, healthCheckRating: unknown };
+
+export const toHealthCheckEntry = ({id, description, date, specialist, diagnosisCodes, healthCheckRating}: FieldsHealthCheckEntry): HealthCheckEntry => {
+    const newEntry: HealthCheckEntry = {
+        id: id,
+        type: "HealthCheck",
+        description: parseName(description),
+        date: parseDate(date),
+        specialist: parseName(specialist),
+        diagnosisCodes: diagnosisCodes as Array<Diagnose['code']>,
+        healthCheckRating: parseCheckRating(healthCheckRating)
+    };
+    return newEntry;
+};
+
+const parseSickLeave = (sickLeave: unknown): {startDate: string, endDate: string} => {
+    if (!sickLeave || typeof sickLeave !== 'object' || 'startDate' in sickLeave === false || 'endDate' in sickLeave === false) {
+        throw new Error('Incorrect or missing sickLeave');
+    }
+
+    return sickLeave as {startDate: string, endDate: string};
+};
+
+type FieldsOccupationalHealthcareEntry = { id: string,  description: unknown, date: unknown, specialist: unknown, diagnosisCodes: unknown, employerName: unknown ,sickLeave: unknown };
+
+export const toOccupationalHealthcareEntry = ({id, description, date, specialist, diagnosisCodes, employerName, sickLeave}: FieldsOccupationalHealthcareEntry): OccupationalHealthcareEntry => {
+    const newEntry: OccupationalHealthcareEntry = {
+        id: id,
+        type: "OccupationalHealthcare",
+        description: parseName(description),
+        date: parseDate(date),
+        specialist: parseName(specialist),
+        diagnosisCodes: diagnosisCodes as Array<Diagnose['code']>,
+        employerName: parseName(employerName),
+        sickLeave: parseSickLeave(sickLeave)
+    };
+    return newEntry;
+};
+
+
+const parseDischarge = (discharge: unknown): {date: string, criteria: string} => {
+    // 如果传入的是{date: "2020-01-01", criteriaaaa: "criteria"}，
+    // 则返回{date: "2020-01-01", criteriaaa: "criteria"}。这里的as为啥不报错？
+    const ret = discharge as {date: string, criteria: string};
+    if (!ret || ret.date === undefined || ret.criteria === undefined) {
+        throw new Error('Incorrect or missing discharge');
+    }
+    return ret; 
+};
+
+type FieldsHospitalEntry = { id: string,  description: unknown, date: unknown, specialist: unknown, diagnosisCodes: unknown, discharge: unknown};
+
+export const toHospitalEntry = ({id, description, date, specialist, diagnosisCodes, discharge}: FieldsHospitalEntry): HospitalEntry => {
+    const newEntry: HospitalEntry = {
+        id: id,
+        type: "Hospital",
+        description: parseName(description),
+        date: parseDate(date),
+        specialist: parseName(specialist),
+        diagnosisCodes: diagnosisCodes as Array<Diagnose['code']>,
+        discharge: parseDischarge(discharge)
+    };
+    return newEntry;
+};
+
 
 export default toNewPatientEntry;

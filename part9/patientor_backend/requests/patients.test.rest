@@ -1,0 +1,48 @@
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+# spcify http header
+Content-Type: application/json 
+
+{ 
+    "date": "2019-10-28",
+    "description": "Cold",
+    "specialist": "MD House",
+    "diagnosisCodes": ["S62.5"],
+    "type": "HealthCheck",
+    "healthCheckRating": 0
+}
+
+###
+
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+# spcify http header
+Content-Type: application/json 
+
+{ 
+    "date": "2019-10-28",
+    "description": "Cold",
+    "specialist": "MD House",
+    "diagnosisCodes": ["S62.5"],
+    "type": "Hospital",
+    "discharge": {
+        "date": "2019-11-28",
+        "criteria": "Thumb"
+    }
+}
+
+###
+POST http://localhost:3001/api/patients/d2773336-f723-11e9-8f0b-362b9e155667/entries
+# spcify http header
+Content-Type: application/json 
+
+{ 
+    "date": "2019-10-28",
+    "description": "Cold",
+    "specialist": "MD House",
+    "diagnosisCodes": ["S62.5"],
+    "type": "OccupationalHealthcare",
+    "employerName": "JJJJ",
+    "sickLeave": {
+        "startDate": "2019-10-28",
+        "endDatea": "2019-11-28"
+    }
+}

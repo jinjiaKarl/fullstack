@@ -26,6 +26,8 @@ const PatientListPage = () => {
     setError(undefined);
   };
 
+  // it sends an HTTP POST request to our backend, adds the patient returned from the backend to our app's state and closes the modal. 
+  // If the backend returns an error, the error is displayed on the form.
   const submitNewPatient = async (values: PatientFormValues) => {
     try {
       const { data: newPatient } = await axios.post<Patient>(

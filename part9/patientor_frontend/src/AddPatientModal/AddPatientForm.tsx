@@ -21,7 +21,7 @@ const genderOptions: GenderOption[] = [
   { value: Gender.Female, label: "Female" },
   { value: Gender.Other, label: "Other" },
 ];
-
+// 当validate通过，onSubmit会被调用
 export const AddPatientForm = ({ onSubmit, onCancel }: Props) => {
   return (
     <Formik
